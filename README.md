@@ -1,3 +1,6 @@
+<img width="1456" height="723" alt="Clipboard 2025-12-24 at 09 15 47" src="https://github.com/user-attachments/assets/a17a29ff-b5c4-43a1-9445-a4d7e47b0d39" />
+
+
 # iamtired 🌌
 
 ### The Ultimate Knowledge Workspace.
