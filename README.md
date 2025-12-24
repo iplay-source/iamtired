@@ -1,11 +1,8 @@
-<img width="1456" height="723" alt="image" src="https://github.com/user-attachments/assets/afa2533d-3cc6-4561-a869-6cff6010ebd9" />
-
-
-# NoteVerse Canvas 🌌
+# iamtired 🌌
 
 ### The Ultimate Knowledge Workspace.
 
-**NoteVerse Canvas** is what happens when **Obsidian**, **Notion**, and **Excalidraw** have a child, raised by **Google Docs**.
+**iamtired** is what happens when **Obsidian**, **Notion**, and **Excalidraw** have a child, raised by **Google Docs**.
 
 It is an infinite spatial knowledge engine that fuses the freedom of a whiteboard with the power of a structured document editor. Connect ideas visually, write deeply, and expand your mind with integrated **Gemini AI**.
 
@@ -17,7 +14,7 @@ It is an infinite spatial knowledge engine that fuses the freedom of a whiteboar
 
 ## ✨ The Ultimate Hybrid: Feature Highlights
 
-**NoteVerse Canvas** isn't just another app; it's the genetic super-hybrid of your favorite tools.
+**iamtired** isn't just another app; it's the genetic super-hybrid of your favorite tools.
 
 ### 🎨 **Spatial Freedom (The Excalidraw/OneNote DNA)**
 Break out of the linear document mindset.
@@ -63,7 +60,7 @@ Built with the bleeding edge of modern web development:
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/yourusername/noteverse-canvas.git
+    git clone https://github.com/yourusername/iamtired.git
     ```
 
 2.  **Install Dependencies**
@@ -111,4 +108,4 @@ We are actively looking for contributors! Do you have an idea for:
 
 ---
 
-**NoteVerse Canvas** — *Where ideas find their place.*
+**iamtired** — *Where ideas find their place.*
