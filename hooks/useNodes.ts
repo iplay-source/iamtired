@@ -9,7 +9,7 @@ export const useNodes = () => {
     {
       id: 'welcome-node',
       type: 'text',
-      title: 'WikiVerse',
+      title: 'NoteVerse',
       content: '## Infinite Canvas\n\n- **Space+Drag** to Pan\n- **Double Click** to Edit\n- **Select** text to Format\n\nDark mode enabled.',
       position: { x: 0, y: 0 },
       width: 400,

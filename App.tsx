@@ -59,7 +59,7 @@ function App() {
     };
     
     if (toLocalStorage) {
-      localStorage.setItem('wikiverse_save', JSON.stringify(data));
+      localStorage.setItem('noteverse_save', JSON.stringify(data));
       setLastSaved(new Date());
     }
     return data;
@@ -93,7 +93,7 @@ function App() {
   };
 
   const handleLoadLocal = () => {
-    const saved = localStorage.getItem('wikiverse_save');
+    const saved = localStorage.getItem('noteverse_save');
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
@@ -113,7 +113,7 @@ function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `wikiverse-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `noteverse-backup-${new Date().toISOString().slice(0,10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };

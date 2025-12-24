@@ -1,5 +1,5 @@
 {
-  "name": "Copy of Copy of WikiVerse Canvas",
-  "description": "A spatial Wikipedia clone featuring an infinite canvas, mind-map connections, and a Google Docs-style WYSIWYG editor powered by Gemini AI.",
+  "name": "NoteVerse Canvas",
+  "description": "A spatial knowledge engine featuring an infinite canvas, mind-map connections, and a Google Docs-style WYSIWYG editor powered by Gemini AI.",
   "requestFramePermissions": []
 }
