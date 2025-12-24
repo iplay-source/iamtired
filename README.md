@@ -12,26 +12,35 @@ It is an infinite spatial knowledge engine that fuses the freedom of a whiteboar
 
 ---
 
-## ✨ Best of All Worlds
+## ✨ The Ultimate Hybrid: Feature Highlights
 
-### 🎨 **Excalidraw-Style Infinite Canvas**
-Why limit your thoughts to a page? **NoteVerse** gives you an infinite 2D plane. Pan, zoom, and arrange your notes spatially. Group related concepts visually, just like a whiteboard, but with full editing power.
+**NoteVerse Canvas** isn't just another app; it's the genetic super-hybrid of your favorite tools.
 
-### 🧠 **Obsidian-Style Graph Thinking**
-Don't just write notes—connect them. Create a visual knowledge graph by linking nodes with drag-and-drop relationship lines. See exactly how your ideas connect, branch, and evolve.
+### 🎨 **Spatial Freedom (The Excalidraw/OneNote DNA)**
+Break out of the linear document mindset.
+*   **Infinite Canvas:** Pan, zoom, and sprawl your ideas across a boundless 2D plane.
+*   **Visual Organization:** Cluster related notes, create mind maps, and organize spatially. If you can visualize it, you can structure it here.
 
-### 📝 **Docs-Style WYSIWYG Editing**
-Every node is a fully-featured text editor. Double-click to enter a focused writing mode with Markdown support, rich formatting, and seamless media integration. It feels familiar, powerful, and distraction-free.
+### 🧠 **Networked Thought (The Obsidian/Roam DNA)**
+Your ideas don't exist in a vacuum.
+*   **Visual Knowledge Graph:** Connect any node to any other node with tangible, labeled relationship lines.
+*   **Contextual Branching:** See exactly how your arguments flow and evolve. It’s a mind map that actually contains your full content.
 
-### 🤖 **AI Native (Powered by Gemini)**
-Stuck? Let the AI help.
-*   **Auto-Drafting:** Turn a title into a full article in seconds.
-*   **Smart Branching:** Explode a paragraph into a new, connected node with one click.
-*   **Context Aware:** The AI understands the context of your connected notes to generate relevant content.
+### 📝 **Deep Writing (The Notion/Docs DNA)**
+Don't sacrifice writing power for visual layout.
+*   **Full WYSIWYG Editor:** Every node is a fully capable document editor.
+*   **Markdown Native:** Use familiar shortcuts (`##`, `**`, `-`) to format text instantly while typing.
+*   **Distraction-Free Focus:** Double-click a node to zoom in and focus purely on writing, blocking out the rest of the universe.
 
-### 🖼️ **Rich Media Integration**
-*   **AI Image Generation:** Visualize concepts instantly with Gemini 2.5 Flash Image.
-*   **Web Search:** Ground your notes with real images from the web.
+### 🤖 **AI-Native Intelligence (Powered by Gemini)**
+The "Second Brain" that actually thinks.
+*   **Thought Expansion:** Writer's block is obsolete. Type a title, click "Expand," and watch a full article materialize.
+*   **Context-Aware Generation:** Branching off a node? The AI reads the parent node to ensure the new content flows logically from the source.
+*   **Semantic Refinement:** Ask the AI to "make it punchier," "fix grammar," or "summarize" directly within the editor.
+
+### 🖼️ **Rich Media & Visuals**
+*   **AI Image Generation:** Need a specific visual for your concept? Generate it instantly with **Gemini 2.5 Flash Image**.
+*   **Grounded Search:** Pull real-world reference images directly from Google Search to ground your notes in reality.
 
 ---
 
