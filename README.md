@@ -1,3 +1,6 @@
+<img width="1456" height="723" alt="image" src="https://github.com/user-attachments/assets/afa2533d-3cc6-4561-a869-6cff6010ebd9" />
+
+
 # NoteVerse Canvas 🌌
 
 ### The Ultimate Knowledge Workspace.
