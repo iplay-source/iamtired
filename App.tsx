@@ -161,7 +161,8 @@ function App() {
         console.error("Failed to load initial save", e);
       }
     }
-  }, [loadData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   const handleSaveConfig = (newConfig: AIConfig) => {
     setAiConfig(newConfig);
