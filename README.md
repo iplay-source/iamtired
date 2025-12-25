@@ -17,6 +17,14 @@
 
 <br />
 
+<div align="center">
+
+[![Patreon](https://img.shields.io/badge/Support-Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://patreon.com/yourusername)
+[![Discord](https://img.shields.io/badge/Community-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/yourlink)
+[![Twitter](https://img.shields.io/badge/Follow-Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/yourusername)
+
+</div>
+
 ---
 
 ## Why iamtired?
@@ -35,17 +43,30 @@ Don't sacrifice depth for space. Every node is a fully-featured word processor.
 *   **Distraction-Free Focus:** Double-click any node to enter a dedicated writing mode, fading out the noise.
 *   **Rich Media:** Drag-and-drop images or embed URLs instantly.
 
-### 🧠 Your AI Co-Pilot
-Integrated deeply into the workflow, not just a sidebar chat.
-*   **Context-Aware Branching:** Stuck? Click "Branch" and watch the AI read your current node to generate relevant, connected ideas automatically.
-*   **Semantic Editing:** Highlight text and command the AI to "Fix grammar," "Summarize," or "Make it punchier."
-*   **Multi-Model Freedom:** Bring your own keys. Native support for **Google Gemini, OpenAI, Claude, OpenRouter, and Local LLMs (Ollama)**.
+### 🧠 A Second Brain That Actually Thinks
+Integrated deeply into the workflow, the AI acts as a true intellectual partner, not just a chatbot sidebar.
+
+*   **Contextual Branching:** Don't just brainstorm; **mind-meld**. Click "Branch" on any node, and the AI analyzes the parent context to generate relevant, connected sub-topics automatically. It builds your knowledge graph *for you*.
+*   **One-Click Expansion:** Have a rough idea? Turn a single bullet point into a comprehensive, well-structured article with the "Expand" feature.
+*   **Semantic Editing:** Highlight any text and instruct the AI naturally. "Make this more professional," "Summarize this in three bullets," or "Fix the tone."
+*   **Visual Intelligence:** Instantly generate bespoke cover art for your nodes using DALL-E 3 or Gemini, or have the AI scour the web to find the perfect reference image.
+*   **Multi-Model Freedom:** We believe in choice. Bring your own keys for **Google Gemini, OpenAI, Claude, OpenRouter**, or run completely offline with **Local LLMs (Ollama)**.
 
 ### 🔒 Privacy by Design
 Your thoughts belong to you.
 *   **Local-First Architecture:** All data is saved instantly to your browser's local storage.
 *   **No Vendor Lock-in:** Export your entire brain graph to JSON at any time.
 *   **Zero-Database:** We don't store your data. Your API keys live on your device, nowhere else.
+
+---
+
+## 🤝 Join the Journey
+
+We are building the future of knowledge management, and we want you involved.
+
+*   **Open for Collaboration:** Have a feature idea? Want to fix a bug? PRs are welcome!
+*   **Suggestions:** Drop your wildest ideas in our [Discord](https://discord.gg/placeholder) or open an Issue.
+*   **Support:** If this tool helps you think better, consider supporting the development on Patreon.
 
 ---
 
