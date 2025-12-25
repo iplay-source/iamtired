@@ -1,58 +1,55 @@
+
 # iamtired 🌌
 
-### The Ultimate Knowledge Workspace.
-
-**iamtired** is what happens when **Obsidian**, **Notion**, and **Excalidraw** have a child, raised by **Google Docs**.
-
-It is an infinite spatial knowledge engine that fuses the freedom of a whiteboard with the power of a structured document editor. Connect ideas visually, write deeply, and expand your mind with integrated **Gemini AI**.
+**iamtired** is an infinite spatial knowledge engine. It combines a whiteboard interface with a structured document editor, powered by Generative AI.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-19-61dafb.svg)
-![AI](https://img.shields.io/badge/Powered%20By-Gemini%20Flash%203-8e75ff.svg)
+![AI](https://img.shields.io/badge/Powered%20By-Gemini-8e75ff.svg)
 
 ---
 
-## ✨ The Ultimate Hybrid: Feature Highlights
+## Features
 
-**iamtired** isn't just another app; it's the genetic super-hybrid of your favorite tools.
+### 🎨 Infinite Canvas
+*   **Boundless Workspace:** Pan and zoom infinitely to organize thoughts spatially.
+*   **Adaptive Grid:** Visual grid that scales with zoom levels; includes snap-to-grid functionality.
+*   **Theme Engine:** Seamless Light and Dark mode support with glassmorphism UI.
+*   **Navigation:** Intuitive panning (`Space + Drag`) and zooming (`Ctrl + Scroll`).
 
-### 🎨 **Spatial Freedom (The Excalidraw/OneNote DNA)**
-Break out of the linear document mindset.
-*   **Infinite Canvas:** Pan, zoom, and sprawl your ideas across a boundless 2D plane.
-*   **Visual Organization:** Cluster related notes, create mind maps, and organize spatially. If you can visualize it, you can structure it here.
+### 📝 Rich Content Nodes
+*   **Markdown Editor:** Full WYSIWYG experience supporting headers, lists, bold, italic, and quotes.
+*   **Image Nodes:** Drag-and-drop upload, URL embedding, and AI generation.
+*   **Customization:** Resizable nodes, custom fonts (Sans, Serif, Mono), and image fitting (Cover/Contain) with positioning.
+*   **Focus Mode:** Double-click a node to isolate and edit content without distractions.
 
-### 🧠 **Networked Thought (The Obsidian/Roam DNA)**
-Your ideas don't exist in a vacuum.
-*   **Visual Knowledge Graph:** Connect any node to any other node with tangible, labeled relationship lines.
-*   **Contextual Branching:** See exactly how your arguments flow and evolve. It’s a mind map that actually contains your full content.
+### 🔗 Visual Connectivity
+*   **Connection Lines:** Draw relationships between any two nodes.
+*   **Labeled Edges:** Add semantic labels to connections (e.g., "causes", "relates to").
+*   **Smart Interaction:** Edit labels inline; text selection is preserved while panning/dragging.
 
-### 📝 **Deep Writing (The Notion/Docs DNA)**
-Don't sacrifice writing power for visual layout.
-*   **Full WYSIWYG Editor:** Every node is a fully capable document editor.
-*   **Markdown Native:** Use familiar shortcuts (`##`, `**`, `-`) to format text instantly while typing.
-*   **Distraction-Free Focus:** Double-click a node to zoom in and focus purely on writing, blocking out the rest of the universe.
+### 🤖 AI Intelligence
+*   **Context-Aware Branching:** Create new nodes linked to existing ones; the AI reads the parent context to generate relevant continuations.
+*   **Text Expansion:** Turn short notes into full articles.
+*   **Semantic Editing:** Refine text with natural language instructions (e.g., "Fix grammar", "Make concise").
+*   **Media Generation:** Generate images for nodes using Gemini 2.5 Flash Image or DALL-E 3.
+*   **Grounded Search:** Find reference images via Google Search (Gemini provider only).
+*   **Multi-Provider Support:** Compatible with Google Gemini, OpenAI, Anthropic Claude, OpenRouter, and Local LLMs (Ollama).
 
-### 🤖 **AI-Native Intelligence (Powered by Gemini)**
-The "Second Brain" that actually thinks.
-*   **Thought Expansion:** Writer's block is obsolete. Type a title, click "Expand," and watch a full article materialize.
-*   **Context-Aware Generation:** Branching off a node? The AI reads the parent node to ensure the new content flows logically from the source.
-*   **Semantic Refinement:** Ask the AI to "make it punchier," "fix grammar," or "summarize" directly within the editor.
-
-### 🖼️ **Rich Media & Visuals**
-*   **AI Image Generation:** Need a specific visual for your concept? Generate it instantly with **Gemini 2.5 Flash Image**.
-*   **Grounded Search:** Pull real-world reference images directly from Google Search to ground your notes in reality.
+### 💾 Data & System
+*   **Local-First:** Data is auto-saved to browser Local Storage.
+*   **Portable:** Export and Import your graph as JSON.
+*   **Privacy:** API Keys are stored locally in the browser; no external database.
 
 ---
 
 ## 🛠️ Tech Stack
 
-Built with the bleeding edge of modern web development:
-
-*   **Core:** React 19 (RC)
-*   **Styling:** Tailwind CSS + Lucide Icons
-*   **AI Engine:** Google GenAI SDK (`@google/genai`)
-*   **Models:** `gemini-3-flash-preview` (Text), `gemini-2.5-flash-image` (Image Gen)
-*   **Markdown:** `react-markdown` + `remark-gfm`
+*   **Framework:** React 19
+*   **Styling:** Tailwind CSS
+*   **Icons:** Lucide React
+*   **AI Integration:** Google GenAI SDK (`@google/genai`)
+*   **Markdown:** `react-markdown` / `remark-gfm`
 
 ---
 
@@ -91,21 +88,5 @@ Built with the bleeding edge of modern web development:
 | **Edit Node** | Double Click |
 | **Branch Node** | Click `Branch` Icon or Context Menu |
 | **Connect Nodes** | Drag from Node Handle (Blue Dot) |
+| **Edit Link Label** | Click Link / Press Enter to Save |
 | **Save/Load** | `Ctrl + S` / Toolbar Menu |
-
----
-
-## 🤝 Community & Roadmap
-
-NoteVerse is an evolving experiment in spatial computing and AI. We believe the best tools are built by the people who use them.
-
-We are actively looking for contributors! Do you have an idea for:
-*   Real-time collaboration?
-*   Vector-based semantic search?
-*   Custom node types (Kanban, Code Blocks)?
-
-**Fork the repo, submit a PR, or open an issue.** Let's build the future of note-taking together.
-
----
-
-**iamtired** — *Where ideas find their place.*
