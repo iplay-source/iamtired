@@ -13,7 +13,8 @@
 <!-- 
     PLACEHOLDER: Replace 'screenshot.png' with your actual screenshot URL or path 
 -->
-![Application Screenshot](https://placehold.co/1200x600/18181b/ffffff?text=Add+Your+Screenshot+Here)
+<img width="1450" height="722" alt="Clipboard 2025-12-25 at 06 01 54" src="https://github.com/user-attachments/assets/5c8c5997-d31e-4c00-a013-a853036c6cbd" />
+
 
 <br />
 
