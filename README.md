@@ -1,45 +1,51 @@
 
 # iamtired 🌌
 
-**iamtired** is an infinite spatial knowledge engine. It combines a whiteboard interface with a structured document editor, powered by Generative AI.
+**The spatial operating system for your mind.**
+*Infinite canvas. Rich documents. AI-native.*
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![License](https://img.shields.io/badge/license-GPLv3-blue.svg)
 ![React](https://img.shields.io/badge/React-19-61dafb.svg)
 ![AI](https://img.shields.io/badge/AI-Powered-8e75ff.svg)
 
+<br />
+
+<!-- 
+    PLACEHOLDER: Replace 'screenshot.png' with your actual screenshot URL or path 
+-->
+![Application Screenshot](https://placehold.co/1200x600/18181b/ffffff?text=Add+Your+Screenshot+Here)
+
+<br />
+
 ---
 
-## Features
+## Why iamtired?
 
-### 🎨 Infinite Canvas
-*   **Boundless Workspace:** Pan and zoom infinitely to organize thoughts spatially.
-*   **Adaptive Grid:** Visual grid that scales with zoom levels; includes snap-to-grid functionality.
-*   **Theme Engine:** Seamless Light and Dark mode support with glassmorphism UI.
-*   **Navigation:** Intuitive panning (`Space + Drag`) and zooming (`Ctrl + Scroll`).
+Most tools force you to choose between a whiteboard and a document editor. **iamtired** fuses them into a single, seamless engine for thought.
 
-### 📝 Rich Content Nodes
-*   **Markdown Editor:** Full WYSIWYG experience supporting headers, lists, bold, italic, and quotes.
-*   **Image Nodes:** Drag-and-drop upload, URL embedding, and AI generation.
-*   **Customization:** Resizable nodes, custom fonts (Sans, Serif, Mono), and image fitting (Cover/Contain) with positioning.
-*   **Focus Mode:** Double-click a node to isolate and edit content without distractions.
+### 🚀 Think Without Borders
+Break free from linear documents. Organize your ideas the way your brain actually works—spatially.
+*   **Infinite Canvas:** Pan, zoom, and sprawl your ideas across a boundless workspace.
+*   **Visual Logic:** Connect concepts with labeled edges to map relationships, arguments, and workflows.
+*   **Adaptive Interface:** A glassmorphism UI that looks stunning in Light and Dark modes, with a grid that scales as you zoom.
 
-### 🔗 Visual Connectivity
-*   **Connection Lines:** Draw relationships between any two nodes.
-*   **Labeled Edges:** Add semantic labels to connections (e.g., "causes", "relates to").
-*   **Smart Interaction:** Edit labels inline; text selection is preserved while panning/dragging.
+### ✍️ Write With Power
+Don't sacrifice depth for space. Every node is a fully-featured word processor.
+*   **WYSIWYG Markdown:** Write beautiful content with headers, lists, and code blocks directly on the canvas.
+*   **Distraction-Free Focus:** Double-click any node to enter a dedicated writing mode, fading out the noise.
+*   **Rich Media:** Drag-and-drop images or embed URLs instantly.
 
-### 🤖 AI Intelligence
-*   **Multi-Provider Support:** Seamlessly switch between Google Gemini, OpenAI, Anthropic Claude, OpenRouter, and Local LLMs (Ollama).
-*   **Context-Aware Branching:** Create new nodes linked to existing ones; the AI reads the parent context to generate relevant continuations.
-*   **Text Expansion:** Turn short notes into full articles.
-*   **Semantic Editing:** Refine text with natural language instructions (e.g., "Fix grammar", "Make concise").
-*   **Media Generation:** Generate images for nodes using supported AI models.
-*   **Grounded Search:** Find reference images via Google Search (supported providers only).
+### 🧠 Your AI Co-Pilot
+Integrated deeply into the workflow, not just a sidebar chat.
+*   **Context-Aware Branching:** Stuck? Click "Branch" and watch the AI read your current node to generate relevant, connected ideas automatically.
+*   **Semantic Editing:** Highlight text and command the AI to "Fix grammar," "Summarize," or "Make it punchier."
+*   **Multi-Model Freedom:** Bring your own keys. Native support for **Google Gemini, OpenAI, Claude, OpenRouter, and Local LLMs (Ollama)**.
 
-### 💾 Data & System
-*   **Local-First:** Data is auto-saved to browser Local Storage.
-*   **Portable:** Export and Import your graph as JSON.
-*   **Privacy:** API Keys are stored locally in the browser; no external database.
+### 🔒 Privacy by Design
+Your thoughts belong to you.
+*   **Local-First Architecture:** All data is saved instantly to your browser's local storage.
+*   **No Vendor Lock-in:** Export your entire brain graph to JSON at any time.
+*   **Zero-Database:** We don't store your data. Your API keys live on your device, nowhere else.
 
 ---
 
@@ -48,8 +54,8 @@
 *   **Framework:** React 19
 *   **Styling:** Tailwind CSS
 *   **Icons:** Lucide React
-*   **AI Integration:** Google GenAI SDK & Standard REST APIs
-*   **Markdown:** `react-markdown` / `remark-gfm`
+*   **AI Engine:** Google GenAI SDK & Standard REST APIs
+*   **Core:** `react-markdown` / `remark-gfm`
 
 ---
 
@@ -71,7 +77,7 @@
     ```
 
 4.  **Configure AI**
-    Open the app and click the **Settings** icon to configure your preferred AI provider (Gemini, OpenAI, Claude, Local, etc.).
+    Launch the app and click the **Settings** icon. Enter your API key for your preferred provider (Gemini, OpenAI, etc.) to unlock the full potential of the engine.
 
 ---
 
