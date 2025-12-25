@@ -1,5 +1,6 @@
+
 import React, { useRef, useState } from 'react';
-import { ImagePlus, Trash2, MoveVertical, AlignCenterVertical, ArrowUpFromLine, ArrowDownFromLine } from 'lucide-react';
+import { ImagePlus, X, MoveVertical, AlignCenterVertical, ArrowUpFromLine, ArrowDownFromLine } from 'lucide-react';
 
 interface NodeImageProps {
   url: string;
@@ -56,7 +57,7 @@ export const NodeImage: React.FC<NodeImageProps> = ({ url, title, height, fit, p
                 </button>
             )}
 
-            <button onClick={(e) => { e.stopPropagation(); onUpdateImage(undefined); }} className="p-1.5 bg-white/80 dark:bg-black/60 backdrop-blur text-zinc-600 dark:text-zinc-300 hover:text-red-600 dark:hover:text-red-400 border border-black/5 dark:border-white/10" title="Remove Image"><Trash2 size={14} /></button>
+            <button onClick={(e) => { e.stopPropagation(); onUpdateImage(undefined); }} className="p-1.5 bg-white/80 dark:bg-black/60 backdrop-blur text-zinc-600 dark:text-zinc-300 hover:text-red-600 dark:hover:text-red-400 border border-black/5 dark:border-white/10" title="Remove Image"><X size={14} /></button>
         </div>
       </div>
 

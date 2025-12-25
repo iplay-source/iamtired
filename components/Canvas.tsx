@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useCallback } from 'react';
 import { WikiNode, Connection, Viewport, Position, ToolMode, HandlePosition, ResizeDirection } from '../types';
 import { WikiNode as WikiNodeComponent } from './WikiNode';
@@ -25,6 +26,7 @@ interface CanvasProps {
   onSelectConnection: (id: string) => void;
   onUpdateConnectionLabel: (id: string, label: string) => void;
   onDeleteConnection: (id: string) => void;
+  onBackgroundDoubleClick: (pos: Position) => void;
   registerFormatRef: (ref: any) => void;
   showGrid: boolean;
   snapToGrid: boolean;
@@ -38,7 +40,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   nodes, connections, viewport, toolMode, isSpacePressed,
   onViewportChange, onUpdateContent, onUpdatePosition, onUpdateSize, onUpdateImage, onUpdateImageSettings,
   onDeleteNode, onSelectNode, onBranchNode, onConnectEnd, onExpandAI, onEditNodeAI, onSetImage,
-  onSelectConnection, onUpdateConnectionLabel, onDeleteConnection, registerFormatRef,
+  onSelectConnection, onUpdateConnectionLabel, onDeleteConnection, onBackgroundDoubleClick, registerFormatRef,
   showGrid, snapToGrid, globalFont, isDarkMode
 }) => {
   const isDraggingCanvas = useRef(false);
@@ -46,6 +48,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   const isResizingNode = useRef(false);
   const resizeDirection = useRef<ResizeDirection>('se'); // Track direction
   const isDraggingConnection = useRef(false);
+  const [isConnectionDraggingState, setIsConnectionDraggingState] = useState(false); // State for UI updates (cursor/selection)
   
   const draggedNodeId = useRef<string | null>(null);
   const connectionStartId = useRef<string | null>(null);
@@ -82,6 +85,14 @@ export const Canvas: React.FC<CanvasProps> = ({
     } else if (toolMode === ToolMode.SELECT) {
         onSelectNode(''); onSelectConnection('');
     }
+  };
+
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    // Only trigger if clicking directly on the canvas background
+    // (WikiNode handles its own double click stopPropagation)
+    const x = (e.clientX - viewport.x) / viewport.scale;
+    const y = (e.clientY - viewport.y) / viewport.scale;
+    onBackgroundDoubleClick({ x, y });
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -189,17 +200,19 @@ export const Canvas: React.FC<CanvasProps> = ({
     currentDragValues.current = null;
 
     if (isDraggingConnection.current) {
-        isDraggingConnection.current = false; setTempConnection(null); connectionStartId.current = null;
+        isDraggingConnection.current = false; 
+        setTempConnection(null); 
+        connectionStartId.current = null;
+        setIsConnectionDraggingState(false); // Reset UI state
     }
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    if (e.ctrlKey || e.metaKey) {
-        // Prevent default browser zoom actions if necessary
-        // e.preventDefault(); // Sometimes tricky in passive listeners, handled in parent hook if needed
-
-        // Multiplicative Zoom for consistent feel at all scales
-        const ZOOM_SPEED = 0.0015; 
+    if (e.ctrlKey) {
+        e.preventDefault();
+        // 5% change per step (assuming ~100 deltaY per step on mouse wheel)
+        // 0.05 / 100 = 0.0005
+        const ZOOM_SPEED = 0.0005; 
         const newScale = Math.min(Math.max(viewport.scale * (1 - e.deltaY * ZOOM_SPEED), 0.1), 5);
         
         onViewportChange({ ...viewport, scale: newScale });
@@ -245,8 +258,9 @@ export const Canvas: React.FC<CanvasProps> = ({
 
   return (
     <div 
-      className="w-full h-full bg-zinc-100 dark:bg-[#09090b] overflow-hidden relative touch-none transition-colors duration-300"
+      className={`w-full h-full bg-zinc-100 dark:bg-[#09090b] overflow-hidden relative touch-none transition-colors duration-300 ${isConnectionDraggingState ? 'select-none' : ''}`}
       onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp} onWheel={handleWheel}
+      onDoubleClick={handleDoubleClick}
       style={{ cursor, ...gridBackground }}
     >
       <div style={{ transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.scale})`, transformOrigin: '0 0', width: '100%', height: '100%', position: 'absolute', willChange: 'transform' }}>
@@ -276,7 +290,16 @@ export const Canvas: React.FC<CanvasProps> = ({
                 currentDragValues.current = {x:node.position.x, y:node.position.y, w:node.width, h:node.height};
                 setTick(t => t + 1); // Force re-render to update cursor
             }}
-            onBranch={onBranchNode} onDotDown={(e, nid, h) => { e.stopPropagation(); isDraggingConnection.current=true; connectionStartId.current=nid; connectionStartHandle.current=h; }} onDotUp={(e, tid) => { if (isDraggingConnection.current && connectionStartId.current && connectionStartId.current !== tid) onConnectEnd(connectionStartId.current, tid); }}
+            onBranch={onBranchNode} 
+            onDotDown={(e, nid, h) => { 
+                e.preventDefault(); // Prevent text selection initiation
+                e.stopPropagation(); 
+                isDraggingConnection.current=true; 
+                connectionStartId.current=nid; 
+                connectionStartHandle.current=h; 
+                setIsConnectionDraggingState(true); // Update UI state
+            }} 
+            onDotUp={(e, tid) => { if (isDraggingConnection.current && connectionStartId.current && connectionStartId.current !== tid) onConnectEnd(connectionStartId.current, tid); }}
             isFormatActive={node.selected === true} registerFormatRef={registerFormatRef}
             globalFont={globalFont}
           />

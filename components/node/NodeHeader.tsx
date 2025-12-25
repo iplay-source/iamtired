@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { GripVertical, X, GitBranch, Edit3, Check } from 'lucide-react';
 
@@ -30,7 +31,7 @@ export const NodeHeader: React.FC<NodeHeaderProps> = ({
             onChange={(e) => onUpdateTitle(e.target.value)}
             disabled={!isEditing}
             className={`font-bold text-zinc-900 dark:text-zinc-100 text-lg tracking-tight bg-transparent border-none outline-none w-full ${!isEditing ? 'pointer-events-none truncate' : ''}`}
-            placeholder="Title"
+            placeholder="Enter title..."
             onPointerDown={(e) => isEditing && e.stopPropagation()}
         />
       </div>

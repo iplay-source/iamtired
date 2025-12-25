@@ -1,6 +1,3 @@
-<img width="1456" height="723" alt="Clipboard 2025-12-24 at 09 15 47" src="https://github.com/user-attachments/assets/a17a29ff-b5c4-43a1-9445-a4d7e47b0d39" />
-
-
 # iamtired 🌌
 
 ### The Ultimate Knowledge Workspace.
@@ -9,12 +6,11 @@
 
 It is an infinite spatial knowledge engine that fuses the freedom of a whiteboard with the power of a structured document editor. Connect ideas visually, write deeply, and expand your mind with integrated **Gemini AI**.
 
-
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-19-61dafb.svg)
+![AI](https://img.shields.io/badge/Powered%20By-Gemini%20Flash%203-8e75ff.svg)
+
 ---
-
-Support the project on Patreon https://patreon.com/iamtiredCanvas?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink
-
 
 ## ✨ The Ultimate Hybrid: Feature Highlights
 

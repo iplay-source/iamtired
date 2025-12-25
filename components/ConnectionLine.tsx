@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Position } from '../types';
 import { X, Check } from 'lucide-react';
@@ -11,10 +12,11 @@ interface ConnectionLineProps {
   onSelect: (e: React.PointerEvent | React.MouseEvent) => void;
   onUpdateLabel: (val: string) => void;
   onDelete: () => void;
+  onDeselect: () => void;
 }
 
 export const ConnectionLine: React.FC<ConnectionLineProps> = ({ 
-  id, start, end, label, isSelected, onSelect, onUpdateLabel, onDelete 
+  id, start, end, label, isSelected, onSelect, onUpdateLabel, onDelete, onDeselect
 }) => {
   const midX = (start.x + end.x) / 2;
   const midY = (start.y + end.y) / 2;
@@ -29,13 +31,19 @@ export const ConnectionLine: React.FC<ConnectionLineProps> = ({
       e.stopPropagation(); setEditingLabel(label || ""); onSelect(e);
   };
 
-  const submitLabel = () => {
+  const submitLabel = (shouldDeselect = false) => {
       if (editingLabel !== null) onUpdateLabel(editingLabel);
       setEditingLabel(null);
+      if (shouldDeselect) onDeselect();
   };
 
   return (
-    <g className="connection-line group" onPointerDown={handlePointerDown} style={{ cursor: 'pointer' }}>
+    <g 
+      className="connection-line group" 
+      onPointerDown={handlePointerDown} 
+      onDoubleClick={(e) => e.stopPropagation()}
+      style={{ cursor: 'pointer' }}
+    >
       <path d={`M ${start.x} ${start.y} L ${end.x} ${end.y}`} stroke="transparent" strokeWidth="20" fill="none" />
       
       <path
@@ -55,10 +63,12 @@ export const ConnectionLine: React.FC<ConnectionLineProps> = ({
                   <input 
                     type="text" className="w-20 text-[10px] outline-none bg-transparent text-zinc-900 dark:text-white border-b border-blue-500/30" 
                     placeholder="Label..." value={editingLabel ?? label ?? ""} onChange={(e) => setEditingLabel(e.target.value)}
-                    onKeyDown={(e) => { if(e.key === 'Enter') submitLabel(); }} autoFocus
+                    onKeyDown={(e) => { if(e.key === 'Enter') submitLabel(true); }} 
+                    onBlur={() => submitLabel(false)}
+                    autoFocus
                   />
-                  <button onClick={submitLabel} className="text-green-600 dark:text-green-400 hover:bg-green-500/20 p-0.5"><Check size={10} /></button>
-                  <button onClick={onDelete} className="text-red-600 dark:text-red-400 hover:bg-red-500/20 p-0.5"><X size={10} /></button>
+                  <button onPointerDown={(e) => e.preventDefault()} onClick={() => submitLabel(true)} className="text-green-600 dark:text-green-400 hover:bg-green-500/20 p-0.5"><Check size={10} /></button>
+                  <button onPointerDown={(e) => e.preventDefault()} onClick={onDelete} className="text-red-600 dark:text-red-400 hover:bg-red-500/20 p-0.5"><X size={10} /></button>
               </div>
           ) : (
              (label || isSelected) && (

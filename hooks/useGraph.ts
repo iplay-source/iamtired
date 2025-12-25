@@ -1,12 +1,15 @@
+
 import { useCallback } from 'react';
 import { useNodes } from './useNodes';
 import { useConnections } from './useConnections';
 import { WikiNode, Connection } from '../types';
 import { generateArticleContent } from '../services/geminiService';
+import { useToast } from '../context/ToastContext';
 
 export const useGraph = () => {
   const { nodes, setNodes, addNode, updateNode, setNodeImage, expandNodeAI, editNodeAI, generateId } = useNodes();
   const { connections, setConnections, connectNodes, updateConnectionLabel, deleteConnection, selectConnection } = useConnections(generateId);
+  const { addToast } = useToast();
 
   const branchFromNode = useCallback(async (sourceId: string, text: string) => {
     const sourceNode = nodes.find(n => n.id === sourceId);
@@ -30,13 +33,19 @@ export const useGraph = () => {
     connectNodes(sourceId, newNodeId);
 
     // Pass both title and content for context-aware generation
-    const content = await generateArticleContent(topic, { 
-        title: sourceNode.title, 
-        content: sourceNode.content 
-    });
-    
-    updateNode(newNodeId, { content, isGenerating: false });
-  }, [nodes, connections, generateId, setNodes, connectNodes, updateNode]);
+    try {
+        const content = await generateArticleContent(topic, { 
+            title: sourceNode.title, 
+            content: sourceNode.content 
+        });
+        
+        updateNode(newNodeId, { content, isGenerating: false });
+    } catch (e: any) {
+        addToast({ title: 'Branch Failed', message: e.message || "Failed to generate branch content.", type: 'error' });
+        // Set specific error message in the node so it's not stuck on "Generating..." but doesn't crash the UI
+        updateNode(newNodeId, { content: "Content generation failed. Check your API settings.", isGenerating: false });
+    }
+  }, [nodes, connections, generateId, setNodes, connectNodes, updateNode, addToast]);
 
   const deleteNode = useCallback((id: string) => {
     setNodes(prev => prev.filter(n => n.id !== id));

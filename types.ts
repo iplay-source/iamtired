@@ -43,3 +43,12 @@ export enum ToolMode {
 export type HandlePosition = 'top' | 'right' | 'bottom' | 'left';
 
 export type ResizeDirection = 'n' | 's' | 'e' | 'w' | 'ne' | 'nw' | 'se' | 'sw';
+
+export type AIProvider = 'gemini' | 'openai' | 'claude' | 'openrouter' | 'local';
+
+export interface AIConfig {
+  provider: AIProvider;
+  apiKey: string;
+  baseUrl?: string;
+  model?: string;
+}

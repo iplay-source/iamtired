@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect, memo } from 'react';
 import { WikiNode as WikiNodeType, HandlePosition, ResizeDirection } from '../types';
 import { NodeHandle } from './node/NodeHandle';
@@ -5,7 +6,7 @@ import { NodeImage } from './node/NodeImage';
 import { NodeHeader } from './node/NodeHeader';
 import { TextNodeView } from './node/TextNodeView';
 import { ImageNodeView } from './node/ImageNodeView';
-import { Sparkles, X, ArrowRight, Wand2 } from 'lucide-react';
+import { Sparkles, X, ArrowRight, Wand2, Network } from 'lucide-react';
 
 interface WikiNodeProps {
   node: WikiNodeType;
@@ -134,6 +135,7 @@ export const WikiNode = memo(({
       <div className={`${commonClasses} ${borderClass}`}
         style={{ left: node.position.x, top: node.position.y, width: node.width, height: node.height }}
         onPointerDown={() => { if (!isEditing) onSelect(node.id); }} onPointerUp={(e) => onDotUp(e, node.id)}
+        onDoubleClick={(e) => e.stopPropagation()}
       >
          {(['top', 'right', 'bottom', 'left'] as HandlePosition[]).map(pos => (
             <NodeHandle key={pos} position={pos} onDown={(e) => onDotDown(e, node.id, pos)} onUp={(e) => onDotUp(e, node.id)} />
@@ -143,7 +145,7 @@ export const WikiNode = memo(({
         <ImageNodeView 
             image={node.coverImage} title={node.title} fit={node.imageFit} position={node.imagePosition}
             onDelete={() => onDelete(node.id)} onTitleChange={(t) => onUpdate(node.id, { title: t })}
-            onDragStart={(e) => { onSelect(node.id); onDragStart(e, node.id); }} onResizeStart={(e) => onResizeStart(e, node.id, 'se')}
+            onDragStart={(e) => { onSelect(node.id); onDragStart(e, node.id); }}
             onUpdateSettings={(f, p) => onUpdate(node.id, { imageFit: f, imagePosition: p })}
         />
       </div>
@@ -154,6 +156,7 @@ export const WikiNode = memo(({
     <div className={`${commonClasses} ${borderClass}`}
       style={{ left: node.position.x, top: node.position.y, width: node.width, height: node.height }}
       onPointerDown={() => { if (!isEditing) onSelect(node.id); }} onPointerUp={(e) => onDotUp(e, node.id)}
+      onDoubleClick={(e) => e.stopPropagation()}
     >
       {(['top', 'right', 'bottom', 'left'] as HandlePosition[]).map(pos => (
         <NodeHandle key={pos} position={pos} onDown={(e) => onDotDown(e, node.id, pos)} onUp={(e) => onDotUp(e, node.id)} />
@@ -179,14 +182,17 @@ export const WikiNode = memo(({
         <div className="absolute top-14 left-2 right-2 z-50 animate-in fade-in zoom-in-95 duration-200" onPointerDown={(e) => e.stopPropagation()}>
              <div className="glass-panel p-2 flex flex-col gap-2 shadow-2xl border border-blue-500/30">
                  <div className="flex items-center justify-between px-1">
-                     <span className="text-[10px] uppercase font-bold text-blue-500 dark:text-blue-400 flex items-center gap-1"><Sparkles size={10}/> AI Branch</span>
+                     <span className="text-[10px] uppercase font-bold text-blue-500 dark:text-blue-400 flex items-center gap-1"><Network size={10}/> AI Branch</span>
                      <button onClick={() => setIsBranching(false)} className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"><X size={12}/></button>
                  </div>
+                 <p className="text-[9px] text-zinc-500 dark:text-zinc-400 px-1 leading-snug">
+                     Creates a new connected node using this card as context.
+                 </p>
                  <div className="flex gap-1">
                      <input
                         ref={branchInputRef}
                         className="flex-1 bg-white dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded px-2 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 outline-none focus:border-blue-500/50 placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
-                        placeholder="What specific topic?"
+                        placeholder="Topic to expand on..."
                         value={branchQuery}
                         onChange={(e) => setBranchQuery(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && submitBranch()}

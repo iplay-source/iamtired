@@ -1,10 +1,14 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Viewport, ToolMode } from './types';
+import { Viewport, ToolMode, AIConfig } from './types';
 import { Toolbar } from './components/Toolbar';
 import { FormatToolbar } from './components/FormatToolbar';
 import { Canvas } from './components/Canvas';
 import { HUD } from './components/HUD';
+import { SettingsMenu } from './components/SettingsMenu';
+import { WelcomeModal } from './components/WelcomeModal';
 import { useGraph } from './hooks/useGraph';
+import { configureAI } from './services/geminiService';
 
 const AUTO_SAVE_INTERVAL_MS = 30000; // 30 seconds
 
@@ -19,11 +23,21 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   
+  // AI Config & Onboarding State
+  const [showSettings, setShowSettings] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [aiConfig, setAiConfig] = useState<AIConfig>({
+      provider: 'gemini',
+      apiKey: '',
+      model: 'gemini-3-flash-preview'
+  });
+  
   const activeEditorRef = useRef<HTMLTextAreaElement | null>(null);
   const graph = useGraph();
   const selectedNode = graph.nodes.find(n => n.selected);
+  const mousePosRef = useRef({ x: 0, y: 0 });
 
-  // Refs for State persistence (to avoid stale closures in intervals)
+  // Refs for State persistence
   const nodesRef = useRef(graph.nodes);
   const connectionsRef = useRef(graph.connections);
   const viewportRef = useRef(viewport);
@@ -45,8 +59,59 @@ function App() {
     }
   }, [isDarkMode]);
 
-  // -- Persistence Logic --
+  // Track Mouse Position Global
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+        mousePosRef.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
+  // Load AI Config & Handle Onboarding
+  useEffect(() => {
+    const savedConfig = localStorage.getItem('iamtired_ai_config');
+    const onboardingComplete = localStorage.getItem('iamtired_onboarding_complete');
+
+    if (savedConfig) {
+        try {
+            const parsed = JSON.parse(savedConfig);
+            const fullConfig = {
+                provider: parsed.provider || 'gemini',
+                apiKey: parsed.apiKey || '',
+                baseUrl: parsed.baseUrl || '',
+                model: parsed.model || ''
+            };
+            setAiConfig(fullConfig);
+            configureAI(fullConfig);
+        } catch(e) { 
+            console.error("Failed to load AI config", e);
+            configureAI(aiConfig);
+        }
+    } else {
+        configureAI(aiConfig);
+        if (!onboardingComplete) setShowWelcome(true);
+    }
+  }, []);
+
+  const handleSaveConfig = (newConfig: AIConfig) => {
+      setAiConfig(newConfig);
+      configureAI(newConfig);
+      localStorage.setItem('iamtired_ai_config', JSON.stringify(newConfig));
+      localStorage.setItem('iamtired_onboarding_complete', 'true');
+  };
+
+  const handleContinueWithoutAI = () => {
+      setShowWelcome(false);
+      localStorage.setItem('iamtired_onboarding_complete', 'true');
+  };
+
+  const handleConfigureFromWelcome = () => {
+      setShowWelcome(false);
+      setShowSettings(true);
+  };
+
+  // -- Persistence Logic --
   const saveData = useCallback((toLocalStorage = true) => {
     const data = {
       version: 1,
@@ -57,7 +122,6 @@ function App() {
       globalFont: globalFontRef.current,
       isDarkMode: isDarkModeRef.current
     };
-    
     if (toLocalStorage) {
       localStorage.setItem('iamtired_save', JSON.stringify(data));
       setLastSaved(new Date());
@@ -80,31 +144,17 @@ function App() {
   // Auto Save Timer
   useEffect(() => {
     if (!isAutoSave) return;
-    const interval = setInterval(() => {
-        saveData(true);
-    }, AUTO_SAVE_INTERVAL_MS);
+    const interval = setInterval(() => saveData(true), AUTO_SAVE_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [isAutoSave, saveData]);
 
   // Manual Handlers
-  const handleSaveLocal = () => {
-    saveData(true);
-    alert("Saved to Browser Storage!");
-  };
-
+  const handleSaveLocal = () => { saveData(true); alert("Saved to Browser Storage!"); };
   const handleLoadLocal = () => {
     const saved = localStorage.getItem('iamtired_save');
     if (saved) {
-        try {
-            const parsed = JSON.parse(saved);
-            loadData(parsed);
-        } catch (e) {
-            console.error(e);
-            alert("Failed to load local save.");
-        }
-    } else {
-        alert("No local save found.");
-    }
+        try { loadData(JSON.parse(saved)); } catch (e) { alert("Failed to load local save."); }
+    } else { alert("No local save found."); }
   };
 
   const handleExportFile = () => {
@@ -112,9 +162,7 @@ function App() {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `iamtired-backup-${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
+    a.href = url; a.download = `iamtired-backup-${new Date().toISOString().slice(0,10)}.json`; a.click();
     URL.revokeObjectURL(url);
   };
 
@@ -123,18 +171,12 @@ function App() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (evt) => {
-        try {
-            const parsed = JSON.parse(evt.target?.result as string);
-            loadData(parsed);
-        } catch (err) {
-            alert("Error parsing JSON file");
-        }
+        try { loadData(JSON.parse(evt.target?.result as string)); } catch (err) { alert("Error parsing JSON file"); }
     };
     reader.readAsText(file);
   };
 
   // -- Event Listeners --
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const activeEl = document.activeElement as HTMLElement | null;
@@ -143,32 +185,50 @@ function App() {
       if (isEditing) return;
       if (e.key.toLowerCase() === 'v') setToolMode(ToolMode.SELECT);
       if (e.key.toLowerCase() === 'h') setToolMode(ToolMode.PAN);
-      // Ctrl+S
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
-          e.preventDefault();
-          handleSaveLocal();
+          e.preventDefault(); handleSaveLocal();
       }
     };
     const handleKeyUp = (e: KeyboardEvent) => { if (e.code === 'Space') setIsSpacePressed(false); };
     const handleWheel = (e: WheelEvent) => { if (e.ctrlKey) e.preventDefault(); };
+    
     const handlePaste = (e: ClipboardEvent) => {
+        const activeEl = document.activeElement as HTMLElement | null;
+        const isEditing = activeEl?.tagName === 'TEXTAREA' || activeEl?.tagName === 'INPUT';
+        // Only handle global paste if not editing a text field
+        if (isEditing) return;
+
         const items = e.clipboardData?.items;
         if (!items) return;
+        
+        // Use Mouse Position for Paste
+        const mouseX = mousePosRef.current.x;
+        const mouseY = mousePosRef.current.y;
+        const targetX = (mouseX - viewport.x) / viewport.scale;
+        const targetY = (mouseY - viewport.y) / viewport.scale;
+
+        // 1. Handle Images
         for (let i = 0; i < items.length; i++) {
             if (items[i].type.indexOf('image') !== -1) {
                 const blob = items[i].getAsFile();
                 if (blob) {
                     const reader = new FileReader();
                     reader.onload = (event) => {
-                        const centerX = (-viewport.x + window.innerWidth / 2) / viewport.scale;
-                        const centerY = (-viewport.y + window.innerHeight / 2) / viewport.scale;
-                        graph.addNode('image', 'Pasted Image', undefined, event.target?.result as string, { x: centerX, y: centerY });
+                        graph.addNode('image', '', undefined, event.target?.result as string, { x: targetX, y: targetY });
                     };
                     reader.readAsDataURL(blob);
+                    return; // Stop after first item
                 }
             }
         }
+
+        // 2. Handle Text
+        const textData = e.clipboardData?.getData('text/plain');
+        if (textData && textData.trim().length > 0) {
+            graph.addNode('text', 'Note', textData, undefined, { x: targetX, y: targetY });
+        }
     };
+
     window.addEventListener('keydown', handleKeyDown); window.addEventListener('keyup', handleKeyUp); 
     window.addEventListener('wheel', handleWheel, { passive: false }); window.addEventListener('paste', handlePaste);
     return () => { 
@@ -200,7 +260,9 @@ function App() {
         onAddNode={(type, title, content, image) => {
              const centerX = (-viewport.x + window.innerWidth / 2) / viewport.scale;
              const centerY = (-viewport.y + window.innerHeight / 2) / viewport.scale;
-             graph.addNode(type, title, content, image, { x: centerX, y: centerY });
+             // Add random jitter to avoid perfect overlap
+             const jitter = () => (Math.random() - 0.5) * 60;
+             graph.addNode(type, title, content, image, { x: centerX + jitter(), y: centerY + jitter() });
         }} 
         toolMode={isSpacePressed ? ToolMode.PAN : toolMode} setToolMode={setToolMode} onZoomIn={() => setViewport(p => ({ ...p, scale: Math.min(3, p.scale * 1.2) }))} onZoomOut={() => setViewport(p => ({ ...p, scale: Math.max(0.1, p.scale / 1.2) }))}
         
@@ -218,6 +280,9 @@ function App() {
         
         isDarkMode={isDarkMode}
         onToggleTheme={() => setIsDarkMode(!isDarkMode)}
+
+        onOpenSettings={() => setShowSettings(true)}
+        onOpenWelcome={() => setShowWelcome(true)}
       >
          {/* Context Aware Menu */}
          {selectedNode && selectedNode.type === 'text' ? (
@@ -249,12 +314,21 @@ function App() {
         onDeleteNode={graph.deleteNode} onSelectNode={graph.selectNode} onBranchNode={graph.branchFromNode}
         onConnectEnd={graph.connectNodes} onExpandAI={graph.expandNodeAI} onEditNodeAI={graph.editNodeAI} onSetImage={graph.setNodeImage}
         onSelectConnection={graph.selectConnection} onUpdateConnectionLabel={graph.updateConnectionLabel} onDeleteConnection={graph.deleteConnection}
+        onBackgroundDoubleClick={(pos) => graph.addNode('text', 'Untitled', '', undefined, pos)}
         registerFormatRef={(ref) => activeEditorRef.current = ref.current}
         showGrid={showGrid} snapToGrid={snapToGrid}
         globalFont={globalFont} isDarkMode={isDarkMode}
       />
       
       <HUD nodeCount={graph.nodes.length} connectionCount={graph.connections.length} zoomScale={viewport.scale} lastSaved={lastSaved} />
+      
+      {showSettings && (
+          <SettingsMenu currentConfig={aiConfig} onSave={handleSaveConfig} onClose={() => setShowSettings(false)} />
+      )}
+
+      {showWelcome && (
+          <WelcomeModal onConfigure={handleConfigureFromWelcome} onContinue={handleContinueWithoutAI} />
+      )}
     </div>
   );
 }

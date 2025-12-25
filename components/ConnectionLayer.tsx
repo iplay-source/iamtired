@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Connection, WikiNode, Position } from '../types';
 import { ConnectionLine } from './ConnectionLine';
@@ -25,12 +26,6 @@ export const ConnectionLayer: React.FC<ConnectionLayerProps> = ({
   return (
     <svg className="absolute top-[-50000px] left-[-50000px] w-[100000px] h-[100000px] pointer-events-none overflow-visible">
       <defs>
-        {/* We need CSS variables to work inside SVG markers, but marker color inheritance is tricky.
-            Instead, we can use the 'context-stroke' or 'context-fill' keywords if supported, 
-            or define multiple markers and swap them based on theme/class context, which is hard in SVG defs without JS.
-            A simpler approach for this app is using a neutral color or the main text color variable if possible.
-            However, 'var(--text-main)' works in modern browsers for SVG fill.
-        */}
         <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
           <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-main)" fillOpacity="0.4" />
         </marker>
@@ -49,6 +44,7 @@ export const ConnectionLayer: React.FC<ConnectionLayerProps> = ({
             key={conn.id} id={conn.id} start={{ x: start.x + OFF, y: start.y + OFF }} end={{ x: end.x + OFF, y: end.y + OFF }}
             label={conn.label} isSelected={!!conn.selected}
             onSelect={(e) => { e.stopPropagation(); onSelectConnection(conn.id); }}
+            onDeselect={() => onSelectConnection('')}
             onUpdateLabel={(val) => onUpdateConnectionLabel(conn.id, val)} onDelete={() => onDeleteConnection(conn.id)}
           />
         );
