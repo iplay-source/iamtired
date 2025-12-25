@@ -5,7 +5,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-19-61dafb.svg)
-![AI](https://img.shields.io/badge/Powered%20By-Gemini-8e75ff.svg)
+![AI](https://img.shields.io/badge/AI-Powered-8e75ff.svg)
 
 ---
 
@@ -29,12 +29,12 @@
 *   **Smart Interaction:** Edit labels inline; text selection is preserved while panning/dragging.
 
 ### 🤖 AI Intelligence
+*   **Multi-Provider Support:** Seamlessly switch between Google Gemini, OpenAI, Anthropic Claude, OpenRouter, and Local LLMs (Ollama).
 *   **Context-Aware Branching:** Create new nodes linked to existing ones; the AI reads the parent context to generate relevant continuations.
 *   **Text Expansion:** Turn short notes into full articles.
 *   **Semantic Editing:** Refine text with natural language instructions (e.g., "Fix grammar", "Make concise").
-*   **Media Generation:** Generate images for nodes using Gemini 2.5 Flash Image or DALL-E 3.
-*   **Grounded Search:** Find reference images via Google Search (Gemini provider only).
-*   **Multi-Provider Support:** Compatible with Google Gemini, OpenAI, Anthropic Claude, OpenRouter, and Local LLMs (Ollama).
+*   **Media Generation:** Generate images for nodes using supported AI models.
+*   **Grounded Search:** Find reference images via Google Search (supported providers only).
 
 ### 💾 Data & System
 *   **Local-First:** Data is auto-saved to browser Local Storage.
@@ -48,7 +48,7 @@
 *   **Framework:** React 19
 *   **Styling:** Tailwind CSS
 *   **Icons:** Lucide React
-*   **AI Integration:** Google GenAI SDK (`@google/genai`)
+*   **AI Integration:** Google GenAI SDK & Standard REST APIs
 *   **Markdown:** `react-markdown` / `remark-gfm`
 
 ---
@@ -65,16 +65,13 @@
     npm install
     ```
 
-3.  **Set Environment Variables**
-    Create a `.env` file and add your Google Gemini API Key:
-    ```env
-    API_KEY=your_gemini_api_key_here
-    ```
-
-4.  **Run Development Server**
+3.  **Run Development Server**
     ```bash
     npm start
     ```
+
+4.  **Configure AI**
+    Open the app and click the **Settings** icon to configure your preferred AI provider (Gemini, OpenAI, Claude, Local, etc.).
 
 ---
 
