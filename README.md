@@ -10,11 +10,8 @@
 
 <br />
 
-<!-- 
-    PLACEHOLDER: Replace 'screenshot.png' with your actual screenshot URL or path 
--->
-![Application Screenshot](<img width="1450" height="722" alt="Clipboard 2025-12-25 at 06 01 54" src="https://github.com/user-attachments/assets/319e4a9d-39ee-42c4-81a6-9c3fe098f732" />
-)
+<img width="1450" height="722" alt="Clipboard 2025-12-25 at 06 01 54" src="https://github.com/user-attachments/assets/e590f1ed-844e-452e-914a-2f5db1389c61" />
+
 
 <br />
 
