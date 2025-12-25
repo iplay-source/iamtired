@@ -19,6 +19,7 @@ export interface WikiNode {
   height: number;
   selected?: boolean;
   isGenerating?: boolean;
+  zIndex?: number;
 }
 
 export interface Connection {

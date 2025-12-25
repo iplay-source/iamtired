@@ -20,27 +20,34 @@ export const useNodes = () => {
       imageHeight: 160,
       selected: false,
       isGenerating: false,
+      zIndex: 1,
     }
   ]);
+
+  const getNextZIndex = useCallback(() => {
+    if (nodes.length === 0) return 1;
+    return Math.max(...nodes.map(n => n.zIndex || 0)) + 1;
+  }, [nodes]);
 
   const addNode = useCallback(async (type: 'text' | 'image', title: string, content?: string, image?: string, pos?: Position) => {
     const id = generateId();
     const position = pos || { x: 0, y: 0 };
-    
+
     const newNode: WikiNode = {
-        id, type, title,
-        content: content || '',
-        coverImage: image,
-        position,
-        width: type === 'image' ? 300 : 350,
-        height: 300,
-        imageHeight: 160,
-        imageFit: 'contain',
-        isGenerating: false
+      id, type, title,
+      content: content || '',
+      coverImage: image,
+      position,
+      width: type === 'image' ? 300 : 350,
+      height: 300,
+      imageHeight: 160,
+      imageFit: 'contain',
+      isGenerating: false,
+      zIndex: getNextZIndex()
     };
 
     setNodes(prev => [...prev, newNode]);
-  }, []);
+  }, [getNextZIndex]);
 
   const updateNode = useCallback((id: string, updates: Partial<WikiNode>) => {
     setNodes(prev => prev.map(n => n.id === id ? { ...n, ...updates } : n));
@@ -49,22 +56,22 @@ export const useNodes = () => {
   const setNodeImage = useCallback(async (id: string, title: string, mode: 'generate' | 'search') => {
     updateNode(id, { isGenerating: true });
     try {
-        const image = mode === 'generate' ? await generateImageForArticle(title) : await searchImageForArticle(title);
-        updateNode(id, { isGenerating: false, coverImage: image || undefined });
+      const image = mode === 'generate' ? await generateImageForArticle(title) : await searchImageForArticle(title);
+      updateNode(id, { isGenerating: false, coverImage: image || undefined });
     } catch (e: any) {
-        addToast({ title: 'Image Failed', message: e.message || 'Could not fetch image', type: 'error' });
-        updateNode(id, { isGenerating: false });
+      addToast({ title: 'Image Failed', message: e.message || 'Could not fetch image', type: 'error' });
+      updateNode(id, { isGenerating: false });
     }
   }, [updateNode, addToast]);
 
   const expandNodeAI = useCallback(async (id: string, title: string, currentContent: string) => {
     updateNode(id, { isGenerating: true });
     try {
-        const newContent = await expandStub(title, currentContent);
-        updateNode(id, { content: newContent, isGenerating: false });
+      const newContent = await expandStub(title, currentContent);
+      updateNode(id, { content: newContent, isGenerating: false });
     } catch (e: any) {
-        addToast({ title: 'Expansion Failed', message: e.message || 'Could not expand text', type: 'error' });
-        updateNode(id, { isGenerating: false });
+      addToast({ title: 'Expansion Failed', message: e.message || 'Could not expand text', type: 'error' });
+      updateNode(id, { isGenerating: false });
     }
   }, [updateNode, addToast]);
 
@@ -72,13 +79,18 @@ export const useNodes = () => {
     if (!instruction) return;
     updateNode(id, { isGenerating: true });
     try {
-        const newContent = await refineContent(currentContent, instruction);
-        updateNode(id, { content: newContent, isGenerating: false });
+      const newContent = await refineContent(currentContent, instruction);
+      updateNode(id, { content: newContent, isGenerating: false });
     } catch (e: any) {
-        addToast({ title: 'Edit Failed', message: e.message || 'Could not edit text', type: 'error' });
-        updateNode(id, { isGenerating: false });
+      addToast({ title: 'Edit Failed', message: e.message || 'Could not edit text', type: 'error' });
+      updateNode(id, { isGenerating: false });
     }
   }, [updateNode, addToast]);
 
-  return { nodes, setNodes, addNode, updateNode, setNodeImage, expandNodeAI, editNodeAI, generateId };
+  const bringToFront = useCallback((id: string) => {
+    const maxZ = Math.max(...nodes.map(n => n.zIndex || 0), 0);
+    updateNode(id, { zIndex: maxZ + 1 });
+  }, [nodes, updateNode]);
+
+  return { nodes, setNodes, addNode, updateNode, setNodeImage, expandNodeAI, editNodeAI, bringToFront, generateId };
 };

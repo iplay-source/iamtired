@@ -7,7 +7,7 @@ import { generateArticleContent } from '../services/geminiService';
 import { useToast } from '../context/ToastContext';
 
 export const useGraph = () => {
-  const { nodes, setNodes, addNode, updateNode, setNodeImage, expandNodeAI, editNodeAI, generateId } = useNodes();
+  const { nodes, setNodes, addNode, updateNode, setNodeImage, expandNodeAI, editNodeAI, bringToFront, generateId } = useNodes();
   const { connections, setConnections, connectNodes, updateConnectionLabel, deleteConnection, selectConnection } = useConnections(generateId);
   const { addToast } = useToast();
 
@@ -19,31 +19,31 @@ export const useGraph = () => {
     if (!topic) return;
 
     const existingBranches = connections.filter(c => c.sourceId === sourceId).length;
-    const verticalOffset = (existingBranches * 280) - 280; 
+    const verticalOffset = (existingBranches * 280) - 280;
     const x = sourceNode.position.x + sourceNode.width + 100;
     const y = sourceNode.position.y + verticalOffset + (Math.random() * 50);
 
     const newNodeId = generateId();
     // Add stub immediately
     setNodes(prev => [...prev, {
-        id: newNodeId, type: 'text', title: topic, content: 'Generating...',
-        position: { x, y }, width: 350, height: 250, imageHeight: 160, isGenerating: true
+      id: newNodeId, type: 'text', title: topic, content: 'Generating...',
+      position: { x, y }, width: 350, height: 250, imageHeight: 160, isGenerating: true
     }]);
-    
+
     connectNodes(sourceId, newNodeId);
 
     // Pass both title and content for context-aware generation
     try {
-        const content = await generateArticleContent(topic, { 
-            title: sourceNode.title, 
-            content: sourceNode.content 
-        });
-        
-        updateNode(newNodeId, { content, isGenerating: false });
+      const content = await generateArticleContent(topic, {
+        title: sourceNode.title,
+        content: sourceNode.content
+      });
+
+      updateNode(newNodeId, { content, isGenerating: false });
     } catch (e: any) {
-        addToast({ title: 'Branch Failed', message: e.message || "Failed to generate branch content.", type: 'error' });
-        // Set specific error message in the node so it's not stuck on "Generating..." but doesn't crash the UI
-        updateNode(newNodeId, { content: "Content generation failed. Check your API settings.", isGenerating: false });
+      addToast({ title: 'Branch Failed', message: e.message || "Failed to generate branch content.", type: 'error' });
+      // Set specific error message in the node so it's not stuck on "Generating..." but doesn't crash the UI
+      updateNode(newNodeId, { content: "Content generation failed. Check your API settings.", isGenerating: false });
     }
   }, [nodes, connections, generateId, setNodes, connectNodes, updateNode, addToast]);
 
@@ -54,8 +54,11 @@ export const useGraph = () => {
 
   const selectNode = useCallback((id: string | null) => {
     setNodes(prev => prev.map(n => ({ ...n, selected: n.id === id })));
-    if (id) selectConnection(null);
-  }, [setNodes, selectConnection]);
+    if (id) {
+      selectConnection(null);
+      bringToFront(id);
+    }
+  }, [setNodes, selectConnection, bringToFront]);
 
   const loadGraph = useCallback((newNodes: WikiNode[], newConnections: Connection[]) => {
     setNodes(newNodes);
@@ -65,6 +68,7 @@ export const useGraph = () => {
   return {
     nodes, connections,
     addNode, updateNode, deleteNode, selectNode, branchFromNode, expandNodeAI, editNodeAI, setNodeImage,
+    bringToFront,
     connectNodes, updateConnectionLabel, deleteConnection, selectConnection,
     loadGraph
   };

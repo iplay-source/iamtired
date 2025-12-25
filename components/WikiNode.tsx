@@ -125,7 +125,7 @@ export const WikiNode = memo(({
     );
   };
 
-  const commonClasses = `absolute flex flex-col glass-panel transition-shadow duration-200 group overflow-visible ${isSelected ? 'shadow-xl z-30' : 'hover:border-zinc-300 dark:hover:border-white/20 hover:shadow-xl z-10'}`;
+  const commonClasses = `absolute flex flex-col glass-panel transition-shadow duration-200 group overflow-visible ${isSelected ? 'shadow-xl' : 'hover:border-zinc-300 dark:hover:border-white/20 hover:shadow-xl'}`;
 
   // When selected, we remove the default border and let ResizeHandles draw the selection border
   const borderClass = isSelected ? 'border-transparent' : 'border-zinc-200 dark:border-white/10';
@@ -133,7 +133,7 @@ export const WikiNode = memo(({
   if (node.type === 'image') {
     return (
       <div className={`${commonClasses} ${borderClass}`}
-        style={{ left: node.position.x, top: node.position.y, width: node.width, height: node.height }}
+        style={{ left: node.position.x, top: node.position.y, width: node.width, height: node.height, zIndex: node.zIndex || 1 }}
         onPointerDown={() => { if (!isEditing) onSelect(node.id); }} onPointerUp={(e) => onDotUp(e, node.id)}
         onDoubleClick={(e) => e.stopPropagation()}
       >
@@ -154,7 +154,7 @@ export const WikiNode = memo(({
 
   return (
     <div className={`${commonClasses} ${borderClass}`}
-      style={{ left: node.position.x, top: node.position.y, width: node.width, height: node.height }}
+      style={{ left: node.position.x, top: node.position.y, width: node.width, height: node.height, zIndex: node.zIndex || 1 }}
       onPointerDown={() => { if (!isEditing) onSelect(node.id); }} onPointerUp={(e) => onDotUp(e, node.id)}
       onDoubleClick={(e) => e.stopPropagation()}
     >
