@@ -14,8 +14,11 @@ iamtired-iota.vercel.app
 <!-- 
     PLACEHOLDER: Replace 'screenshot.png' with your actual screenshot URL or path 
 -->
+<h1>v1.3 (tab support, further refinements)</h1>
 <img width="1453" height="785" alt="image" src="https://github.com/user-attachments/assets/c7aca647-1577-4ffa-bfb7-f478b2dfd446" />
 
+
+<h2>v1.1 (older)</h2>
 <img width="1450" height="722" alt="Clipboard 2025-12-25 at 06 01 54" src="https://github.com/user-attachments/assets/5c8c5997-d31e-4c00-a013-a853036c6cbd" />
 
 
