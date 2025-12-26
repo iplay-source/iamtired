@@ -1,5 +1,5 @@
 
-# iamtired 🌌
+# iamtired
 iamtired-iota.vercel.app
 
 **The spatial operating system for your mind.**
