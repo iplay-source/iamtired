@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iamtired</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <style>
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.85);
+        --glass-border: rgba(0, 0, 0, 0.1);
+        --bg-body: #f4f4f5; /* Zinc 100 */
+        --text-main: #18181b;
+        
+        /* Dynamic Node Text Colors - Light Mode */
+        --node-text-0: #000000;
+        --node-text-1: #18181b;
+        --node-text-2: #3f3f46;
+        --node-text-3: #71717a;
+        --node-text-4: #a1a1aa;
+
+        /* Dynamic Node Background Colors - Light Mode (Pastels) */
+        --node-bg-0: #ffffff; /* Default White */
+        --node-bg-1: #fee2e2; /* Red 100 */
+        --node-bg-2: #ffedd5; /* Orange 100 */
+        --node-bg-3: #fef9c3; /* Yellow 100 */
+        --node-bg-4: #dcfce7; /* Green 100 */
+        --node-bg-5: #dbeafe; /* Blue 100 */
+        --node-bg-6: #f3e8ff; /* Purple 100 */
+      }
+      
+      .dark {
+        --glass-bg: rgba(24, 24, 27, 0.85);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --bg-body: #09090b; /* Zinc 950 */
+        --text-main: #e4e4e7;
+
+        /* Dynamic Node Text Colors - Dark Mode */
+        --node-text-0: #ffffff;
+        --node-text-1: #f4f4f5;
+        --node-text-2: #d4d4d8;
+        --node-text-3: #a1a1aa;
+        --node-text-4: #71717a;
+
+        /* Dynamic Node Background Colors - Dark Mode (Dark Pastels) */
+        --node-bg-0: #09090b; /* Default Zinc 950 */
+        --node-bg-1: #471f1f; /* Dark Red */
+        --node-bg-2: #47311f; /* Dark Orange */
+        --node-bg-3: #46471f; /* Dark Yellow/Olive */
+        --node-bg-4: #1f472e; /* Dark Green */
+        --node-bg-5: #1f2d47; /* Dark Blue */
+        --node-bg-6: #371f47; /* Dark Purple */
+      }
+
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-main);
+        transition: background-color 0.3s, color 0.3s;
+      }
+      
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      /* Markdown Content - Color Inheritance */
+      .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content p, 
+      .markdown-content ul, .markdown-content ol, .markdown-content blockquote, 
+      .markdown-content code, .markdown-content pre { 
+        color: inherit; 
+      }
+      
+      /* Markdown Content - Light Mode Defaults */
+      .markdown-content h1 { font-size: 1.8em; font-weight: bold; margin-bottom: 0.5em; }
+      .markdown-content h2 { font-size: 1.4em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+      .markdown-content h3 { font-size: 1.2em; font-weight: bold; margin-top: 0.8em; margin-bottom: 0.4em; }
+      .markdown-content p { margin-bottom: 0.8em; line-height: 1.6; }
+      .markdown-content ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
+      .markdown-content ol { list-style-type: decimal; padding-left: 1.5em; margin-bottom: 1em; }
+      .markdown-content blockquote { border-left: 2px solid #d4d4d8; padding-left: 1em; font-style: italic; }
+      .markdown-content code { background-color: #e4e4e7; padding: 0.2em 0.4em; font-size: 0.9em; font-family: monospace; border-radius: 4px; }
+      .markdown-content pre { background-color: #f4f4f5; padding: 1em; overflow-x: auto; margin-bottom: 1em; border: 1px solid #e4e4e7; border-radius: 4px; }
+      .markdown-content a { color: #2563eb; text-decoration: none; }
+      .markdown-content a:hover { text-decoration: underline; }
+
+      /* Dark Mode Overrides */
+      .dark .markdown-content blockquote { border-left-color: #52525b; }
+      .dark .markdown-content code { background-color: #27272a; }
+      .dark .markdown-content pre { background-color: #18181b; border-color: #27272a; }
+      .dark .markdown-content a { color: #60a5fa; }
+      
+      .wiki-textarea:focus { outline: none; }
+      
+      /* Glass Utility */
+      .glass-panel {
+        background-color: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--glass-border);
+        transition: background-color 0.3s, border-color 0.3s;
+      }
+
+      /* Custom Scrollbar Logic */
+      .wiki-textarea, .markdown-content {
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+        transition: scrollbar-color 0.3s;
+      }
+      
+      .wiki-textarea:hover, .markdown-content:hover {
+        scrollbar-color: rgba(161, 161, 170, 0.3) transparent;
+      }
+      
+      .dark .wiki-textarea:hover, .dark .markdown-content:hover {
+        scrollbar-color: rgba(113, 113, 122, 0.3) transparent;
+      }
+
+      /* Webkit Fallback */
+      .wiki-textarea::-webkit-scrollbar,
+      .markdown-content::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      
+      .wiki-textarea::-webkit-scrollbar-track,
+      .markdown-content::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      .wiki-textarea::-webkit-scrollbar-thumb,
+      .markdown-content::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border-radius: 3px;
+      }
+      
+      .wiki-textarea:hover::-webkit-scrollbar-thumb,
+      .markdown-content:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+      
+      .dark .wiki-textarea:hover::-webkit-scrollbar-thumb,
+      .dark .markdown-content:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react-markdown": "https://esm.sh/react-markdown@9.0.1",
+    "remark-gfm": "https://esm.sh/remark-gfm@4.0.0",
+    "path": "https://esm.sh/path@^0.12.7",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
