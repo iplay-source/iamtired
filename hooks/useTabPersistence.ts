@@ -1,0 +1,192 @@
+import { useRef, useEffect, useCallback } from 'react';
+import { ToolMode } from '../types';
+import { TabState } from '../types/tabTypes';
+
+const AUTO_SAVE_INTERVAL_MS = 30000;
+
+interface UseTabPersistenceProps {
+    getTabState: () => TabState;
+    loadTabState: (state: TabState) => void;
+    
+    globalHeaderFont: 'sans' | 'serif' | 'mono';
+    globalHeaderFontSize: number;
+    globalHeaderColor: string;
+    
+    globalBodyFont: 'sans' | 'serif' | 'mono';
+    globalBodyFontSize: number;
+    globalColor: string;
+    
+    isDarkMode: boolean;
+    isAutoSave: boolean;
+    showGrid: boolean;
+    snapToGrid: boolean;
+    toolMode: ToolMode;
+    
+    setGlobalHeaderFont: (f: 'sans' | 'serif' | 'mono') => void;
+    setGlobalHeaderFontSize: (s: number) => void;
+    setGlobalHeaderColor: (c: string) => void;
+    
+    setGlobalBodyFont: (f: 'sans' | 'serif' | 'mono') => void;
+    setGlobalBodyFontSize: (s: number) => void;
+    setGlobalColor: (c: string) => void;
+    
+    setIsDarkMode: (v: boolean) => void;
+    setIsAutoSave: (v: boolean) => void;
+    setShowGrid: (v: boolean) => void;
+    setSnapToGrid: (v: boolean) => void;
+    setToolMode: (t: ToolMode) => void;
+    setLastSaved: (d: Date) => void;
+}
+
+export const useTabPersistence = ({
+    getTabState, loadTabState,
+    globalHeaderFont, globalHeaderFontSize, globalHeaderColor,
+    globalBodyFont, globalBodyFontSize, globalColor,
+    isDarkMode, isAutoSave, showGrid, snapToGrid, toolMode,
+    setGlobalHeaderFont, setGlobalHeaderFontSize, setGlobalHeaderColor,
+    setGlobalBodyFont, setGlobalBodyFontSize, setGlobalColor,
+    setIsDarkMode, setIsAutoSave, setShowGrid, setSnapToGrid, setToolMode, setLastSaved
+}: UseTabPersistenceProps) => {
+
+    const getTabStateRef = useRef(getTabState);
+    const globalHeaderFontRef = useRef(globalHeaderFont);
+    const globalHeaderFontSizeRef = useRef(globalHeaderFontSize);
+    const globalHeaderColorRef = useRef(globalHeaderColor);
+    
+    const globalBodyFontRef = useRef(globalBodyFont);
+    const globalBodyFontSizeRef = useRef(globalBodyFontSize);
+    const globalColorRef = useRef(globalColor);
+    
+    const isDarkModeRef = useRef(isDarkMode);
+    const isAutoSaveRef = useRef(isAutoSave);
+    const showGridRef = useRef(showGrid);
+    const snapToGridRef = useRef(snapToGrid);
+    const toolModeRef = useRef(toolMode);
+    
+    const isInitializedRef = useRef(false);
+
+    useEffect(() => { getTabStateRef.current = getTabState; }, [getTabState]);
+    
+    useEffect(() => { globalHeaderFontRef.current = globalHeaderFont; }, [globalHeaderFont]);
+    useEffect(() => { globalHeaderFontSizeRef.current = globalHeaderFontSize; }, [globalHeaderFontSize]);
+    useEffect(() => { globalHeaderColorRef.current = globalHeaderColor; }, [globalHeaderColor]);
+    
+    useEffect(() => { globalBodyFontRef.current = globalBodyFont; }, [globalBodyFont]);
+    useEffect(() => { globalBodyFontSizeRef.current = globalBodyFontSize; }, [globalBodyFontSize]);
+    useEffect(() => { globalColorRef.current = globalColor; }, [globalColor]);
+    
+    useEffect(() => { isDarkModeRef.current = isDarkMode; }, [isDarkMode]);
+    useEffect(() => { isAutoSaveRef.current = isAutoSave; }, [isAutoSave]);
+    useEffect(() => { showGridRef.current = showGrid; }, [showGrid]);
+    useEffect(() => { snapToGridRef.current = snapToGrid; }, [snapToGrid]);
+    useEffect(() => { toolModeRef.current = toolMode; }, [toolMode]);
+
+    const markInitialized = useCallback(() => {
+        isInitializedRef.current = true;
+    }, []);
+
+    const saveData = useCallback((toLocalStorage = true) => {
+        if (toLocalStorage && !isInitializedRef.current) return null;
+
+        const tabState = getTabStateRef.current();
+        const data = {
+            version: 3,
+            timestamp: Date.now(),
+            tabState,
+            globalHeaderFont: globalHeaderFontRef.current,
+            globalHeaderFontSize: globalHeaderFontSizeRef.current,
+            globalHeaderColor: globalHeaderColorRef.current,
+            globalBodyFont: globalBodyFontRef.current,
+            globalBodyFontSize: globalBodyFontSizeRef.current,
+            globalColor: globalColorRef.current,
+            isDarkMode: isDarkModeRef.current,
+            isAutoSave: isAutoSaveRef.current,
+            showGrid: showGridRef.current,
+            snapToGrid: snapToGridRef.current,
+            toolMode: toolModeRef.current
+        };
+        
+        if (toLocalStorage) {
+            try {
+                localStorage.setItem('iamtired_save', JSON.stringify(data));
+                document.cookie = `theme=${isDarkModeRef.current ? 'dark' : 'light'}; path=/; max-age=31536000`;
+                setLastSaved(new Date());
+            } catch (e) {
+                console.error("Failed to save to localStorage. Quota might be exceeded.", e);
+            }
+        }
+        return data;
+    }, [setLastSaved]);
+
+    const loadData = useCallback((data: any) => {
+        if (!data) return;
+
+        if (data.version === 1 && data.nodes && data.connections) {
+            // Legacy handling
+            const legacyTab = {
+                id: `tab-legacy-${Date.now()}`,
+                title: 'Canvas 1',
+                nodes: data.nodes,
+                connections: data.connections,
+                viewport: data.viewport || { x: window.innerWidth / 2, y: window.innerHeight / 2, scale: 1 }
+            };
+            loadTabState({ tabs: [legacyTab], activeTabId: legacyTab.id });
+        }
+        else if ((data.version === 2 || data.version === 3) && data.tabState) {
+            loadTabState(data.tabState);
+        }
+
+        // Font Loading with fallback
+        if (data.globalFont && !data.globalHeaderFont && !data.globalBodyFont) {
+            setGlobalHeaderFont(data.globalFont);
+            setGlobalBodyFont(data.globalFont);
+        } else {
+            if (data.globalHeaderFont) setGlobalHeaderFont(data.globalHeaderFont);
+            if (data.globalBodyFont) setGlobalBodyFont(data.globalBodyFont);
+        }
+
+        if (data.globalHeaderFontSize) setGlobalHeaderFontSize(data.globalHeaderFontSize);
+        if (data.globalHeaderColor) setGlobalHeaderColor(data.globalHeaderColor);
+        
+        if (data.globalBodyFontSize) setGlobalBodyFontSize(data.globalBodyFontSize);
+        if (data.globalColor) setGlobalColor(data.globalColor);
+
+        if (data.isDarkMode !== undefined) setIsDarkMode(data.isDarkMode);
+        if (data.isAutoSave !== undefined) setIsAutoSave(data.isAutoSave);
+        if (data.showGrid !== undefined) setShowGrid(data.showGrid);
+        if (data.snapToGrid !== undefined) setSnapToGrid(data.snapToGrid);
+        if (data.toolMode !== undefined) setToolMode(data.toolMode);
+        setLastSaved(data.timestamp ? new Date(data.timestamp) : new Date());
+        
+        markInitialized();
+    }, [loadTabState, setGlobalHeaderFont, setGlobalHeaderFontSize, setGlobalHeaderColor, setGlobalBodyFont, setGlobalBodyFontSize, setGlobalColor, setIsDarkMode, setIsAutoSave, setShowGrid, setSnapToGrid, setToolMode, setLastSaved, markInitialized]);
+
+    useEffect(() => {
+        if (!isAutoSave) return;
+        const interval = setInterval(() => saveData(true), AUTO_SAVE_INTERVAL_MS);
+        return () => clearInterval(interval);
+    }, [isAutoSave, saveData]);
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden' && isAutoSaveRef.current) {
+                saveData(true);
+            }
+        };
+        const handleBeforeUnload = () => {
+            if (isAutoSaveRef.current) {
+                saveData(true);
+            }
+        };
+
+        window.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [saveData]);
+
+    return { loadData, saveData, markInitialized };
+};

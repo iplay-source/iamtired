@@ -1,0 +1,92 @@
+
+@import "tailwindcss";
+
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+@layer base {
+
+    *,
+    ::before,
+    ::after {
+        border-radius: 0px !important;
+    }
+
+    /* Global Custom Scrollbar - matching text nodes */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border-radius: 3px;
+        transition: background-color 0.3s;
+    }
+
+    *:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .dark *:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Firefox Support */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+        transition: scrollbar-color 0.3s;
+    }
+
+    *:hover {
+        scrollbar-color: rgba(161, 161, 170, 0.3) transparent;
+    }
+
+    .dark *:hover {
+        scrollbar-color: rgba(113, 113, 122, 0.3) transparent;
+    }
+}
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 
+       VISUAL DESIGN POLICY: 
+       - Glass background opacity is set to 0.85 (rgba(..., 0.85)) for better text contrast.
+       - Do not lower opacity below 0.85.
+       - Blur radius is 36px for a diffuse, premium feel.
+    */
+    .glass-panel {
+        background-color: var(--glass-bg);
+        backdrop-filter: blur(36px);
+        -webkit-backdrop-filter: blur(36px);
+        border: 1px solid var(--glass-border);
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .force-glass {
+        background-color: var(--glass-bg) !important;
+        backdrop-filter: blur(36px) !important;
+        -webkit-backdrop-filter: blur(36px) !important;
+        border: 1px solid var(--glass-border) !important;
+    }
+}

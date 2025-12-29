@@ -1,0 +1,60 @@
+import { useState } from 'react';
+import { ToolMode, AIConfig } from '../types';
+
+const getCookie = (name: string) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+};
+
+export const useAppState = () => {
+    const [toolMode, setToolMode] = useState<ToolMode>(ToolMode.SELECT);
+    const [isSpacePressed, setIsSpacePressed] = useState(false);
+    const [isAutoSave, setIsAutoSave] = useState(true);
+    const [showGrid, setShowGrid] = useState(true);
+    const [snapToGrid, setSnapToGrid] = useState(true);
+    
+    // Global Styles
+    const [globalHeaderFont, setGlobalHeaderFont] = useState<'sans' | 'serif' | 'mono'>('sans');
+    const [globalHeaderFontSize, setGlobalHeaderFontSize] = useState<number>(18);
+    const [globalHeaderColor, setGlobalHeaderColor] = useState<string>('var(--node-text-0)');
+    
+    const [globalBodyFont, setGlobalBodyFont] = useState<'sans' | 'serif' | 'mono'>('sans');
+    const [globalBodyFontSize, setGlobalBodyFontSize] = useState<number>(15);
+    const [globalColor, setGlobalColor] = useState<string>('var(--node-text-0)'); // Serves as globalBodyColor
+
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        const cookieTheme = getCookie('theme');
+        if (cookieTheme) return cookieTheme === 'dark';
+        return true;
+    });
+    const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+    // AI Config & Onboarding State
+    const [showSettings, setShowSettings] = useState(false);
+    const [showWelcome, setShowWelcome] = useState(false);
+    const [aiConfig, setAiConfig] = useState<AIConfig>({
+        provider: 'gemini',
+        apiKey: '',
+        model: 'gemini-3-flash-preview'
+    });
+
+    return {
+        toolMode, setToolMode,
+        isSpacePressed, setIsSpacePressed,
+        isAutoSave, setIsAutoSave,
+        showGrid, setShowGrid,
+        snapToGrid, setSnapToGrid,
+        globalHeaderFont, setGlobalHeaderFont,
+        globalHeaderFontSize, setGlobalHeaderFontSize,
+        globalHeaderColor, setGlobalHeaderColor,
+        globalBodyFont, setGlobalBodyFont,
+        globalBodyFontSize, setGlobalBodyFontSize,
+        globalColor, setGlobalColor,
+        isDarkMode, setIsDarkMode,
+        lastSaved, setLastSaved,
+        showSettings, setShowSettings,
+        showWelcome, setShowWelcome,
+        aiConfig, setAiConfig
+    };
+};
