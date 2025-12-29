@@ -27,7 +27,7 @@ Dev Build and Web App Available now! (Native App planned soon...)
 <!-- 
     PLACEHOLDER: Replace 'screenshot.png' with your actual screenshot URL or path 
 -->
-<h1>v1.6 node features added(group nodes addd in v1.5)</h1>
+<h1>v1.6 node features added (group nodes added in v1.5)</h1>
 <img width="931" height="636" alt="Clipboard 2025-12-27 at 06 22 54" src="https://github.com/user-attachments/assets/966bf788-a320-4df5-8232-3ec7c170a7ba" />
 
 
